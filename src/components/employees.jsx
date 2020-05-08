@@ -1,5 +1,8 @@
 import React from "react";
 import "./employees.css";
+import { trackPromise } from "react-promise-tracker";
+import { usePromiseTracker } from "react-promise-tracker";
+import Loader from "react-loader-spinner";
 
 const TYPES = {
   salary: (a, b) => a.employee_salary - b.employee_salary,
@@ -13,7 +16,9 @@ export class Employees extends React.Component {
   };
 
   async componentDidMount() {
-    const res = await fetch("http://dummy.restapiexample.com/api/v1/employees");
+    const res = await trackPromise(
+      fetch("http://dummy.restapiexample.com/api/v1/employees")
+    );
     const result = await res.json();
     this.setState({ employees: result.data });
     setInterval(() => {
@@ -49,10 +54,36 @@ export class Employees extends React.Component {
     );
   };
 
+  LoadingIndicator = (props) => {
+    const { promiseInProgress } = usePromiseTracker();
+    return (
+      promiseInProgress && (
+        <div
+          style={{
+            width: "100%",
+            height: "100",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Loader
+            type="ThreeDots"
+            color="deepskyblue"
+            height="100"
+            width="100"
+          />
+        </div>
+      )
+    );
+  };
+
   render() {
     const { employees } = this.state;
+
     return (
       <div className="container">
+        <this.LoadingIndicator />
         {employees.map((employee) => this.renderEmployee(employee))}
       </div>
     );
