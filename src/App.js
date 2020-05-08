@@ -1,6 +1,12 @@
 import React from "react";
 import "./App.css";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+} from "react-router-dom";
 import "./components/TodoList.jsx";
 import { TodoList } from "./components/TodoList.jsx";
 import "./components/employees";
@@ -33,9 +39,15 @@ function App() {
         <Route exact path="/">
           <Home />
         </Route>
+        <Route path="/404" component={pageNotFound} />
+        <Redirect from="*" to="/404" />
       </Switch>
     </Router>
   );
+}
+
+function pageNotFound() {
+  return <h1>Page not found!</h1>;
 }
 
 export default App;
