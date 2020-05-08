@@ -24,7 +24,7 @@ export class Employees extends React.Component {
   sortBy() {
     const { employees } = this.state;
     const newState = employees.sort(this.randomProperty(TYPES));
-    const pickFirstEntries = newState.slice(0, 24);
+    const pickFirstEntries = newState.slice(0, 12);
     this.setState({ employees: pickFirstEntries });
   }
 

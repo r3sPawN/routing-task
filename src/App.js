@@ -5,6 +5,8 @@ import "./components/TodoList.jsx";
 import { TodoList } from "./components/TodoList.jsx";
 import "./components/employees";
 import { Employees } from "./components/employees";
+import "./components/home";
+import Home from "./components/home";
 
 function App() {
   return (
@@ -22,11 +24,14 @@ function App() {
       </div>
 
       <Switch>
-        <Route path="/tasks">
+        <Route exact path="/tasks">
           <TodoList />
         </Route>
-        <Route path="/employees">
+        <Route exact path="/employees">
           <Employees />
+        </Route>
+        <Route exact path="/">
+          <Home />
         </Route>
       </Switch>
     </Router>
