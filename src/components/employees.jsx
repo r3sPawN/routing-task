@@ -1,7 +1,5 @@
 import React from "react";
 import "./employees.css";
-import { trackPromise } from "react-promise-tracker";
-import { usePromiseTracker } from "react-promise-tracker";
 import Loader from "react-loader-spinner";
 
 const TYPES = {
@@ -13,14 +11,13 @@ const TYPES = {
 export class Employees extends React.Component {
   state = {
     employees: [],
+    isLoading: true,
   };
 
   async componentDidMount() {
-    const res = await trackPromise(
-      fetch("http://dummy.restapiexample.com/api/v1/employees")
-    );
+    const res = await fetch("http://dummy.restapiexample.com/api/v1/employees");
     const result = await res.json();
-    this.setState({ employees: result.data });
+    this.setState({ employees: result.data, isLoading: false });
     setInterval(() => {
       this.sortBy();
     }, 10000);
@@ -54,37 +51,21 @@ export class Employees extends React.Component {
     );
   };
 
-  LoadingIndicator = (props) => {
-    const { promiseInProgress } = usePromiseTracker();
+  render() {
+    const { employees, isLoading } = this.state;
+
     return (
-      promiseInProgress && (
-        <div
-          style={{
-            width: "100%",
-            height: "100",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+      <div className="container">
+        {isLoading ? (
           <Loader
             type="ThreeDots"
             color="deepskyblue"
             height="100"
             width="100"
           />
-        </div>
-      )
-    );
-  };
-
-  render() {
-    const { employees } = this.state;
-
-    return (
-      <div className="container">
-        <this.LoadingIndicator />
-        {employees.map((employee) => this.renderEmployee(employee))}
+        ) : (
+          employees.map((employee) => this.renderEmployee(employee))
+        )}
       </div>
     );
   }
