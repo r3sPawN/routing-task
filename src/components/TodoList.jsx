@@ -1,7 +1,5 @@
 import React from "react";
 import "./TodoList.css";
-import "./Todo.jsx";
-import Todo from "./Todo.jsx";
 
 export class TodoList extends React.Component {
   state = {
@@ -46,8 +44,17 @@ export class TodoList extends React.Component {
     const { tasks } = this.state;
     return (
       <div className="tasks-list">
-        {tasks.map((task) => (
-          <Todo />
+        {tasks.map((props) => (
+          <div key={props.id} className="task">
+            <input
+              type="text"
+              value={props.name}
+              disabled={!props.editable}
+              onChange={(event) => this.handleOnChange(event, props.id)}
+            ></input>
+            <span onClick={() => this.handleDelete(props.id)}>delete</span>
+            <span onClick={() => this.handleEdit(props.id)}>edit</span>
+          </div>
         ))}
         <span className="add-button" onClick={this.handleAddTask}>
           Add new
